@@ -1,16 +1,7 @@
-plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm'
-}
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation project(':hello')
     implementation project(':hello_provider')
+    implementation project(':hello_html')
 }
-
-compileKotlin.destinationDir = compileJava.destinationDir

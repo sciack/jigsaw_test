@@ -2,73 +2,43 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
 }
 
-ext {
-    groupName = 'io.github.sciack.jigsaw'
-}
-group = ext.groupName
-
-subprojects {
-    version = '1.0.2'
-    group = groupName
-
+allprojects {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
     repositories {
-        jcenter()
+        mavenCentral()
     }
 
+    group = 'io.github.sciack.jigsaw'
+
+    version = '1.0.0-SNAPSHOT'
+
+    compileKotlin.destinationDir = compileJava.destinationDir
+
+    targetCompatibility=JavaVersion.VERSION_11
+    sourceCompatibility=JavaVersion.VERSION_11
+
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+subprojects {
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib"
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    }
     plugins.withType(JavaPlugin).configureEach {
         java {
             modularity.inferModulePath = true
         }
     }
 
-    tasks.withType(Test).configureEach {
-        useJUnitPlatform()
-    }
-    compileKotlin.destinationDir = compileJava.destinationDir
-
-    compileJava {
-        dependsOn(':compileKotlin')
-        doFirst {
-            options.compilerArgs = [
-                    '--module-path', classpath.asPath,
-            ]
-            classpath = files()
-        }
-    }
-
 }
 
-group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
-
-plugins.withType(JavaPlugin).configureEach {
-    java {
-        modularity.inferModulePath = true
-    }
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testImplementation project(path)
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-}
-
-targetCompatibility=JavaVersion.VERSION_11
-sourceCompatibility=JavaVersion.VERSION_11
-
-
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
-}
-
-compileKotlin.destinationDir = compileJava.destinationDir
