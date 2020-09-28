@@ -1,9 +1,12 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id "org.beryx.jlink" version "2.22.0"
 }
 
 allprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.beryx.jlink'
+
     repositories {
         mavenCentral()
     }
@@ -16,7 +19,10 @@ allprojects {
 
     targetCompatibility=JavaVersion.VERSION_11
     sourceCompatibility=JavaVersion.VERSION_11
-
+    jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    task archive(type: Zip) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 
     test {
         useJUnitPlatform()
@@ -42,3 +48,6 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+
+
+

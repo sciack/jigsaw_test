@@ -1,7 +1,20 @@
+application {
+    mainClass = 'io.github.sciack.jigsaw.app.Main'
+}
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation project(':hello')
     implementation project(':hello_provider')
     implementation project(':hello_html')
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    customImage{
+        appModules =['test.jigsaw.app.main']
+    }
+    launcher{
+        name = 'hello'
+    }
 }
